@@ -2,12 +2,13 @@ from model import Product, User
 from database import get_db
 
 
-def add_product(product_data):  # Add a new product
-    db = get_db()
+def add_product(product_data):  
+    db = get_db() 
     products_collection = db['products']
     products_collection.insert_one(product_data)
+    return True
 
-def get_all_products():     #List all the products in Database
+def get_all_products():     
     db = get_db()
     products_collection = db['products']
     products_data = list(products_collection.find()) 
@@ -47,6 +48,12 @@ def delete_product(product_name):  # Delete a product
         return True
 
 
+def add_user(user_data):  
+    db = get_db() 
+    products_collection = db['users']
+    products_collection.insert_one(user_data)
+    return True
+
 def get_all_users():        #List all the users in Database
     db = get_db()
     users_collection = db['users']
@@ -61,11 +68,3 @@ def get_user_by_username(username):
     if user_data:
         return User(user_data['username'], user_data['email'], user_data['password'])
     return None
-
-
-# def delete_user(username):  # Delete a product
-#     db = get_db()
-#     user= db['users']
-#     user_data= user.delete_one({"name": username})
-#     if user_data:
-#         return True

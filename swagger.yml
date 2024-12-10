@@ -1,0 +1,136 @@
+swagger: "2.0"
+info:
+  title: "Product API"
+  description: "API for managing products"
+  version: "1.0.0"
+host: "localhost:5000"
+basePath: "/api"
+# host: "api.example.com"  # Update this to the desired host
+# basePath: "/api"
+schemes:
+  - "http"
+paths:
+  /add_product:
+    post:
+      tags:
+        - "Products"
+      summary: "Add a new product"
+      parameters:
+        - in: body
+          name: "product_data"
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: "Product name"
+              price:
+                type: number
+                format: float
+                description: "Product price"
+              stock:
+                type: integer
+                description: "Product stock quantity"
+              description:
+                  type: string
+      responses:
+        200:
+          description: "Product created successfully"
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+  /products:
+    get:
+      tags:
+        - "Products"
+      summary: "Get all products"
+      responses:
+        200:
+          description: "A list of products"
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                name:
+                  type: string
+                price:
+                  type: number
+                  format: float
+                stock:
+                  type: integer
+                description:
+                  type: string
+  /product/{product_name}:
+    get:
+      tags:
+        - "Products"
+      summary: "Get a product by name"
+      parameters:
+        - name: product_name
+          in: path
+          type: string
+          required: true
+          description: "Product name"
+      responses:
+        200:
+          description: "Product details"
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              price:
+                type: number
+                format: float
+              stock:
+                type: integer
+        404:
+          description: "Product not found"
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+  /product/{product_name}/stock:
+    put:
+      tags:
+        - "Products"
+      summary: "Update the stock of the product"
+      parameters:
+        - name: product_name
+          in: path
+          type: string
+          required: true
+          description: "The name of the product"
+        - name: stock
+          in: body
+          description: "The new stock value for the product (hardcoded to 5)"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              stock:
+                type: "integer"
+                description: "The number of products available (will be hardcoded to 5)"
+                example: 5
+      responses:
+        200:
+          description: "Product stock updated successfully"
+          schema:
+            type: "object"
+            properties:
+              message:
+                type: "string"
+                example: "Product stock updated successfully"
+        404:
+          description: "Product not found"
+          schema:
+            type: "object"
+            properties:
+              message:
+                type: "string"
+                example: "Product not found"
