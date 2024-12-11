@@ -1,4 +1,3 @@
-# tests/test_service.py
 from service import add_product, get_all_products
 from unittest.mock import patch
 import pytest
@@ -10,9 +9,8 @@ def mock_db():
         yield mock
 
 def test_add_product(mock_db):
-    """Test the create_product function."""
     mock_collection = mock_db.return_value['products']
-    mock_collection.insert_one.return_value = None  # Mock insertion
+    mock_collection.insert_one.return_value = None  
     product_data = {
         "name": "Test Product",
         "description": "A test product",
@@ -25,7 +23,6 @@ def test_add_product(mock_db):
 def test_get_all_products(mock_db):
     """Test the get_all_products function."""
     mock_collection = mock_db.return_value['products']
-    # Include all fields expected by the Product constructor
     mock_collection.find.return_value = [
         {"name": "Camera", "description": "An HD Camera", "price": 1200, "stock": 10}
     ]
