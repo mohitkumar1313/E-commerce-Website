@@ -30,7 +30,7 @@ def api_update_product_stock(product_name):
     if result:
         return jsonify({"message": "Product stock updated successfully"})
     else:
-        return jsonify({"message": "Product stock not updated"})
+        return jsonify({"message": "Product not  found"})
     
 @api_bp.route('/api/product/<product_name>', methods=['DELETE'])                #Delete product
 def api_delete_product(product_name):

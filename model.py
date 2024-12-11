@@ -5,7 +5,6 @@ class User:
         self.password = password
     
     def to_dict(self):
-        #Convert the Product object to a dictionary
         return {
             "username": self.username,
             "email": self.email,
@@ -20,7 +19,6 @@ class Product:
         self.stock = stock
 
     def to_dict(self):
-        #Convert the Product object to a dictionary
         return {
             "name": self.name,
             "description": self.description,

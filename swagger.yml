@@ -1,9 +1,9 @@
 swagger: "2.0"
 info:
-  title: "Product API"
-  description: "API for managing products"
+  title: "Product and User Management API"
+  description: "API for managing products and users"
   version: "1.0.0"
-host: "localhost:5000"
+host: "127.0.0.1:5000"
 basePath: "/api"
 # host: "api.example.com"  # Update this to the desired host
 # basePath: "/api"
@@ -17,7 +17,7 @@ paths:
       summary: "Add a new product"
       parameters:
         - in: body
-          name: "product_data"
+          name: product_data
           required: true
           schema:
             type: object
@@ -33,7 +33,8 @@ paths:
                 type: integer
                 description: "Product stock quantity"
               description:
-                  type: string
+                type: string
+                description: "Product description"
       responses:
         200:
           description: "Product created successfully"
@@ -42,6 +43,7 @@ paths:
             properties:
               message:
                 type: string
+
   /products:
     get:
       tags:
@@ -64,6 +66,7 @@ paths:
                   type: integer
                 description:
                   type: string
+
   /product/{product_name}:
     get:
       tags:
@@ -72,8 +75,8 @@ paths:
       parameters:
         - name: product_name
           in: path
-          type: string
           required: true
+          type: string
           description: "Product name"
       responses:
         200:
@@ -88,6 +91,8 @@ paths:
                 format: float
               stock:
                 type: integer
+              description:
+                type: string
         404:
           description: "Product not found"
           schema:
@@ -95,6 +100,33 @@ paths:
             properties:
               error:
                 type: string
+    delete:
+      tags:
+        - "Products"
+      summary: "Delete a product by name"
+      parameters:
+        - name: product_name
+          in: path
+          required: true
+          type: string
+          description: "Product name"
+      responses:
+        200:
+          description: "Product deleted successfully"
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+        404:
+          description: "Product not found"
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+
+
   /product/{product_name}/stock:
     put:
       tags:
@@ -106,31 +138,134 @@ paths:
           type: string
           required: true
           description: "The name of the product"
-        - name: stock
-          in: body
-          description: "The new stock value for the product (hardcoded to 5)"
+        - in: body
+          name: stock
           required: true
           schema:
-            type: "object"
+            type: object
             properties:
               stock:
-                type: "integer"
-                description: "The number of products available (will be hardcoded to 5)"
+                type: integer
                 example: 5
       responses:
         200:
           description: "Product stock updated successfully"
           schema:
-            type: "object"
+            type: object
             properties:
               message:
-                type: "string"
-                example: "Product stock updated successfully"
+                type: string
         404:
           description: "Product not found"
           schema:
-            type: "object"
+            type: object
             properties:
               message:
-                type: "string"
-                example: "Product not found"
+                type: string
+
+  # /product/{product_name}:
+  #   delete:
+  #     tags:
+  #       - "Products"
+  #     summary: "Delete a product by name"
+  #     parameters:
+  #       - name: product_name
+  #         in: path
+  #         type: string
+  #         required: true
+  #         description: "Product name"
+  #     responses:
+  #       200:
+  #         description: "Product deleted successfully"
+  #         schema:
+  #           type: object
+  #           properties:
+  #             message:
+  #               type: string
+  #       404:
+  #         description: "Product not found"
+  #         schema:
+  #           type: object
+  #           properties:
+  #             message:
+  #               type: string
+
+  /add_user:
+    post:
+      tags:
+        - "Users"
+      summary: "Add a new user"
+      parameters:
+        - in: body
+          name: user_data
+          required: true
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+                description: "Username"
+              email:
+                type: string
+                format: email
+                description: "User's email address"
+              password:
+                type: string
+                description: "User's password"
+      responses:
+        200:
+          description: "User created successfully"
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+
+  /users:
+    get:
+      tags:
+        - "Users"
+      summary: "Get all users"
+      responses:
+        200:
+          description: "A list of users"
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                  format: email
+
+  /user/{username}:
+    get:
+      tags:
+        - "Users"
+      summary: "Get user details by username"
+      parameters:
+        - name: username
+          in: path
+          type: string
+          required: true
+          description: "Username"
+      responses:
+        200:
+          description: "User details"
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+              email:
+                type: string
+                format: email
+        404:
+          description: "User not found"
+          schema:
+            type: object
+            properties:
+              error:
+                type: string

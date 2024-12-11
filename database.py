@@ -1,8 +1,7 @@
 from pymongo import MongoClient
-from pymongo.errors import ConnectionFailure  # Correct error class for connection issues
 
 def get_db():
-    client = MongoClient("mongodb+srv://nesnukurian:pragra@cluster0.alurz.mongodb.net/")
+    client = MongoClient("mongodb+srv://nesnukurian:pragra@cluster0.alurz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
     db = client['ecommerce_db'] 
     return db 
             

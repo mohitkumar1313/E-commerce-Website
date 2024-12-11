@@ -18,10 +18,8 @@ def get_all_products():
 def get_products_by_name(product_name):    
     db = get_db()
     products_collection = db['products']
-    products_cursor = products_collection.find({"name": product_name})  # Cursor for multiple products
-    products_data = list(products_cursor)  # Convert cursor to list
-
-    # Convert each product dictionary to a Product object
+    products_cursor = products_collection.find({"name": product_name})
+    products_data = list(products_cursor) 
     products = [Product(
                     product['name'],
                     product['description'],
@@ -31,22 +29,23 @@ def get_products_by_name(product_name):
 
     return products
 
-
-
-def update_product_stock(product_name):  # Update product stock
+def update_product_stock(product_name): 
     db = get_db()
     products_collection = db['products']
-    product_data= products_collection.update_one({"name": product_name}, {"$set": {"stock": 5}})
-    if product_data:
-        return True
+    product = products_collection.find_one({"name": product_name})
     
-def delete_product(product_name):  # Delete a product
+    if product: 
+        products_collection.update_one({"name": product_name}, {"$set": {"stock": 5}})
+        return True
+    else:
+        return False
+    
+def delete_product(product_name):  
     db = get_db()
     products_collection = db['products']
     product_data= products_collection.delete_one({"name": product_name})
     if product_data:
         return True
-
 
 def add_user(user_data):  
     db = get_db() 
@@ -54,17 +53,17 @@ def add_user(user_data):
     products_collection.insert_one(user_data)
     return True
 
-def get_all_users():        #List all the users in Database
+def get_all_users():   
     db = get_db()
     users_collection = db['users']
-    users_data = list(users_collection.find())  # Fetch all users from the database
+    users_data = list(users_collection.find())  
     users = [User(u['username'], u['email'], u['password']) for u in users_data]
     return users
 
 def get_user_by_username(username):
     db = get_db()
     users_collection = db['users']
-    user_data = users_collection.find_one({"username": username})  # Find user by username
+    user_data = users_collection.find_one({"username": username})  
     if user_data:
         return User(user_data['username'], user_data['email'], user_data['password'])
     return None
