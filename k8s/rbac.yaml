@@ -7,6 +7,9 @@ subjects:
 - kind: User
   name: nesnukurian@gmail.com
   apiGroup: rbac.authorization.k8s.io
+- kind: User
+  name: Baljitk024@gmail.com
+  apiGroup: rbac.authorization.k8s.io  
 roleRef:
   kind: Role
   name: admin
