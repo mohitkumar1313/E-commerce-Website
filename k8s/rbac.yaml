@@ -13,6 +13,9 @@ subjects:
 - kind: User
   name: akash011nahak@gmail.com
   apiGroup: rbac.authorization.k8s.io   
+- kind: User
+  name: harkaur02@gmail.com
+  apiGroup: rbac.authorization.k8s.io  
 roleRef:
   kind: Role
   name: admin
