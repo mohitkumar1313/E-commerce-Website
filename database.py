@@ -1,14 +1,18 @@
+import os
 from pymongo import MongoClient
 
 def get_db():
-    client = MongoClient("mongodb+srv://nesnukurian:pragra@cluster0.alurz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+    # Fetch MongoDB URI from environment variable
+    mongo_uri = os.getenv("MONGO_URI", "mongodb+srv://default_user:default_password@default_cluster.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+    client = MongoClient(mongo_uri)
     db = client['ecommerce_db'] 
     return db 
             
-
 def insert_static_data():
     db = get_db()
     products_collection = db['products']
+    
+    # Insert static product data if the collection is empty
     if products_collection.count_documents({}) == 0: 
         static_products = [
             {"name": "Laptop", "description": "A high-performance laptop.", "price": 1200, "stock": 10},
@@ -19,7 +23,7 @@ def insert_static_data():
         products_collection.insert_many(static_products)
         print("Inserted static products data.")
 
-    # Insert users data if collection is empty
+    # Insert static user data if the collection is empty
     users_collection = db['users']
     if users_collection.count_documents({}) == 0: 
         static_users = [
